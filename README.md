@@ -1,2 +1,3 @@
 # thevelops-test
-Project made to thevelops test 
+
+This project is under development to thevelops test 
