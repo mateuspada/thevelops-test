@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 const url = 'mongodb://thevelops:thevelops123@ds155862.mlab.com:55862/thevelops';
-const opts = { useNewUrlParser: true };
+const opts = {useNewUrlParser: true};
 
 mongoose.connect(url, opts);
 const Schema = mongoose.Schema;
