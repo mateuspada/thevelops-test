@@ -7,8 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
-global.db = require("../db");
-global.userSchema = db.Mongoose.model('users', db.UserSchema, 'users');
 
 /**
  * Get port from environment and store in Express.

@@ -9,12 +9,14 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
     "express-favicon": "^2.0.1",
     "http-errors": "~1.6.2",
+    "joi": "^13.6.0",
     "mongoose": "^5.2.14",
     "morgan": "~1.9.0"
   }
