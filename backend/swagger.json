@@ -2,15 +2,11 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Yet Another Node.js Blogg Application API",
-    "description": "Yet Another Node.js Blogg Application API",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "title": "Thevelops Test API",
+    "description": "This is an API made as a interview test"
   },
   "host": "localhost:3000",
-  "basePath": "/api/v1",
+  "basePath": "",
   "tags": [
     {
       "name": "Users",
@@ -50,7 +46,7 @@
           "200": {
             "description": "New user is created",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserResponse"
             }
           }
         }
@@ -137,29 +133,78 @@
   "definitions": {
     "User": {
       "required": [
+        "_id",
         "email",
-        "_id"
+        "first_name",
+        "last_name",
+        "password"        
       ],
       "properties": {
         "_id": {
           "type": "string",
-          "uniqueItems": true
+          "uniqueItems": true,
+          "example": 1
         },
         "email": {
           "type": "string",
-          "uniqueItems": true
+          "uniqueItems": true,
+          "example": "mateuspada@live.com"
         },
-        "lastName": {
-          "type": "string"
+        "first_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Mateus"
         },
-        "firstName": {
-          "type": "string"
-        }
+        "last_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Spada Leme"
+
+        },
+        "personal_phone": {
+          "type": "string",
+          "example":"(17) 99223-7204"
+        },
+        "password":{
+          "type":"string",
+          "example": "12345678"
+        } 
       }
     },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
+    "UserSucess": {
+      "required": [
+        "_id",
+        "email",
+        "first_name",
+        "last_name"       
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": 1
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": "mateuspada@live.com"
+        },
+        "first_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Mateus"
+        },
+        "last_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Spada Leme"
+
+        },
+        "personal_phone": {
+          "type": "string",
+          "example":"(17) 99223-7204"
+        }
+      }
     }
   }
 }
