@@ -5,7 +5,7 @@
     "title": "Thevelops Test API",
     "description": "This is an API made as a interview test"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3000/api",
   "basePath": "",
   "tags": [
     {
@@ -28,7 +28,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Create new user in system",
+        "summary": "Create new user in system",
         "parameters": [
           {
             "name": "user",
@@ -56,6 +56,15 @@
           "Users"
         ],
         "summary": "Get all users in system",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "JWT authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -66,10 +75,10 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/users/{id}": {
       "parameters": [
         {
-          "name": "userId",
+          "name": "id",
           "in": "path",
           "required": true,
           "description": "ID of user that we want to find",
