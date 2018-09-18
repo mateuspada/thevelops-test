@@ -43,11 +43,17 @@
           "application/json"
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "New user is created",
             "schema": {
               "$ref": "#/definitions/UserResponse"
             }
+          },
+          "400":{
+            "description": "Bad Request - There is something missing in request"            
+          },
+          "500":{
+            "description": "Internal Server Error - Some problem server side."
           }
         }
       },
@@ -71,12 +77,25 @@
             "schema": {
               "$ref": "#/definitions/Users"
             }
+          },
+          "401":{
+            "description": "Unauthorized - missing authorization"
+          },
+          "422":{
+            "description": "Unprocessable Entity - Token is incorrect"
           }
         }
       }
     },
     "/users/{id}": {
       "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "description": "JWT authorization",
+          "required": true,
+          "type": "string"
+        },
         {
           "name": "id",
           "in": "path",
@@ -92,10 +111,22 @@
         "summary": "Get user with given ID",
         "responses": {
           "200": {
-            "description": "User is found",
+            "description": "User found",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserSucess"
             }
+          },
+          "401":{
+            "description": "Unauthorized - missing authorization"
+          },
+          "403":{
+            "description": "Forbidden - token user doesn't match with request user"
+          },
+          "404":{
+            "description": "Not Found - User not found"
+          },
+          "422":{
+            "description": "Unprocessable Entity - Token is incorrect"
           }
         }
       },
@@ -105,11 +136,20 @@
           "Users"
         ],
         "responses": {
-          "200": {
-            "description": "User is deleted",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+          "204": {
+            "description": "No Content - User deleted"
+          },
+          "401":{
+            "description": "Unauthorized - missing authorization"
+          },
+          "403":{
+            "description": "Forbidden - token user doesn't match with request user"
+          },
+          "422":{
+            "description": "Unprocessable Entity - Token is incorrect"
+          },
+          "500":{
+            "description": "Internal Server Error - Some problem server side."
           }
         }
       },
@@ -124,16 +164,31 @@
             "in": "body",
             "description": "User with new values of properties",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserPUT"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "User is updated",
+          "202": {
+            "description": "Accepted - User is updated",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserSucess"
             }
+          },
+          "400":{
+            "description": "Bad Request - There is something missing in request"            
+          },
+          "401":{
+            "description": "Unauthorized - missing authorization"
+          },
+          "403":{
+            "description": "Forbidden - token user doesn't match with request user"
+          },
+          "422":{
+            "description": "Unprocessable Entity - Token is incorrect"
+          },
+          "500":{
+            "description": "Internal Server Error - Some problem server side."
           }
         }
       }
@@ -176,8 +231,52 @@
         },
         "password":{
           "type":"string",
+          "minLength": 3,
+          "maxLength": 20,
           "example": "12345678"
         } 
+      }
+    },
+    "UserPUT": {
+      "required": [
+        "email",
+        "first_name",
+        "last_name",
+        "password"        
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true,
+          "example": "mateuspada@live.com"
+        },
+        "first_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Mateus"
+        },
+        "last_name": {
+          "type": "string",
+          "minLength": 3,
+          "example": "Spada Leme"
+
+        },
+        "personal_phone": {
+          "type": "string",
+          "example":"(17) 99223-7204"
+        },
+        "password":{
+          "type":"string",
+          "minLength": 3,
+          "maxLength": 20,
+          "example": "12345678"
+        } 
+      }
+    },
+    "Users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/UserSucess"
       }
     },
     "UserSucess": {
@@ -214,6 +313,6 @@
           "example":"(17) 99223-7204"
         }
       }
-    }
+    }    
   }
 }
