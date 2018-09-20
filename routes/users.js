@@ -71,18 +71,12 @@ router.put('/:id/', token.verifyToken, function (req, res, next) {
       email: req.body.email,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      personal_phone: req.body.personal_phone,
-      password: req.body.password
+      personal_phone: req.body.personal_phone
     };
 
-    let user = new userSchema(userRequest);
-    const validate = user.joiValidate(userRequest);
-    if (validate.error){
-      res.status(400).json({error: validate.error}).end();
-      return;
+    if ((req.body.password !== 'undefined') && (req.body.password)) {
+      userRequest.password = bcrypt.hashSync(req.body.password);
     }
-
-    userRequest.password = bcrypt.hashSync(req.body.password);
 
     userSchema.findOneAndUpdate(
       { _id: req.params.id }, userRequest, { upsert: false }, function (err, doc) {
@@ -92,7 +86,7 @@ router.put('/:id/', token.verifyToken, function (req, res, next) {
               return;
           }
 
-          res.status(202).json(user.toJSON());
+          res.status(202).json(userRequest);
           res.end();
       });
   }
