@@ -24,7 +24,7 @@ userSchema.methods.joiValidate = function(obj) {
 		email: Joi.string().trim().email({ minDomainAtoms: 2 }).required(),
         first_name: Joi.string().trim().regex(/^.{3,}$/).required(),
         last_name: Joi.string().trim().regex(/^.{3,}$/).required(),
-        personal_phone: Joi.string().trim(),
+        personal_phone: Joi.string().trim().allow('').optional(),
         password: Joi.string().min(8).max(20).required()   
     }
     

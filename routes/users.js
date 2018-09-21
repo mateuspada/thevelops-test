@@ -34,6 +34,32 @@ router.get('/:id/', token.verifyToken, function (req, res, next) {
 });
 
 /* POST to add users */
+router.post('/:id/checkPassword', token.verifyToken, function (req, res, next) {
+  let userRequest = {
+      password: req.body.password
+  };
+
+  if (!userRequest.password){
+      res.sendStatus(400);
+      return;
+  }
+
+  userSchema.findOne({_id: req.params.id}).select('+password').exec(
+      function (e, user) {
+          if (user) {
+              if (bcrypt.compareSync(userRequest.password, user.password)){                  
+                      res.sendStatus(200).end();
+              } else {
+                  res.status(422).json({error: "invalid password"});    
+              }
+          } else {
+            res.status(404).json({error: 'user not found' }).end();
+          };
+      }
+    );       
+});
+
+/* POST to add users */
 router.post('/', function (req, res, next) {
   let userRequest = {
     email: req.body.email,
@@ -67,14 +93,25 @@ router.put('/:id/', token.verifyToken, function (req, res, next) {
   if (req.params.id !== req.tokenData._id){
     res.status(403).json({error: "token user doesn't match with request user"});
   } else {
-    let userRequest = {
-      email: req.body.email,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      personal_phone: req.body.personal_phone
-    };
+    let userRequest = {};
 
-    if ((req.body.password !== 'undefined') && (req.body.password)) {
+    if ((typeof req.body.email !== 'undefined') && (req.body.email)){
+      userRequest.email = req.body.email; 
+    }
+
+    if ((typeof req.body.first_name !== 'undefined') && (req.body.first_name)){
+      userRequest.first_name = req.body.first_name; 
+    }
+
+    if ((typeof req.body.last_name !== 'undefined') && (req.body.last_name)){
+      userRequest.last_name = req.body.last_name; 
+    }
+
+    if ((typeof req.body.personal_phone !== 'undefined') && (req.body.personal_phone)){
+      userRequest.personal_phone = req.body.personal_phone; 
+    }
+
+    if ((typeof req.body.password !== 'undefined') && (req.body.password)) {
       userRequest.password = bcrypt.hashSync(req.body.password);
     }
 
@@ -93,7 +130,7 @@ router.put('/:id/', token.verifyToken, function (req, res, next) {
 });
 
 /* DELETE one user */
-router.delete('/:id/', function (req, res, next) {
+router.delete('/:id/', token.verifyToken, function (req, res, next) {
   if (req.params.id !== req.tokenData._id){
     res.status(403).json({error: "token user doesn't match with request user"});
   } else {
