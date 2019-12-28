@@ -20,7 +20,7 @@
     "http-errors": "~1.6.2",
     "joi": "^13.6.0",
     "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.2.14",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.0",
     "swagger-ui-express": "^4.0.1"
   }
